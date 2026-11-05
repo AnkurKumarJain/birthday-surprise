@@ -208,11 +208,11 @@
             left: 50%;
             transform: translateX(-50%);
             animation: flicker 0.4s infinite alternate;
-            transition: transform 0.3s ease, opacity 0.3s ease;
+            transition: transform 0.4s ease, opacity 0.4s ease;
         }
 
         .flame.out {
-            transform: translateX(-50%) scale(0) rotate(20deg);
+            transform: translateX(-50%) scale(0) rotate(30deg);
             opacity: 0;
         }
 
@@ -324,15 +324,15 @@
             </div>
         </div>
 
-        <!-- STEP 5: Virtual Candle Blowing (Mic & Tap) -->
+        <!-- STEP 5: Virtual Candle Blowing with Animation -->
         <div id="screen-4" class="screen">
             <h1>Make a Wish! 🕯️</h1>
-            <p>Blow into your microphone or tap the flame!</p>
+            <p>Tap the candle flame to blow it out!</p>
             <div class="cake-box" onclick="blowCandle()">
                 🎂
                 <div class="flame" id="candle-flame">🔥</div>
             </div>
-            <p id="candle-status" style="font-style: italic; color: #4a1525;">(Listening for your breath... 💨)</p>
+            <p id="candle-status" style="font-style: italic; color: #4a1525;">(Tap the flame to blow it out)</p>
         </div>
 
         <!-- STEP 6 & 7: Rose Bouquet -->
@@ -410,12 +410,6 @@
         function nextScreen(screenNum) {
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
             document.getElementById(`screen-${screenNum}`).classList.add('active');
-            
-            // Start microphone listener when reaching the candle screen (Screen 4)
-            if (screenNum === 4) {
-                initMic();
-            }
-
             if (screenNum === 7) {
                 showSentence(0);
             }
@@ -444,52 +438,14 @@
         function blowCandle() {
             if (isBlown) return;
             isBlown = true;
-            
+
             const flame = document.getElementById('candle-flame');
-            flame.classList.add('out');
+            flame.classList.add('out'); // Triggers the blow-out animation!
             document.getElementById('candle-status').innerText = "✨ Wish Granted! ✨";
-            
+
             setTimeout(() => {
                 nextScreen(6);
-            }, 800);
-        }
-
-        // Microphone detector for blowing animation
-        function initMic() {
-            if (isBlown) return;
-            navigator.mediaDevices.getUserMedia({ audio: true, video: false })
-                .then(stream => {
-                    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-                    const analyser = audioContext.createAnalyser();
-                    const microphone = audioContext.createMediaStreamSource(stream);
-                    microphone.connect(analyser);
-                    analyser.fftSize = 256;
-                    const bufferLength = analyser.frequencyBinCount;
-                    const dataArray = new Uint8Array(bufferLength);
-
-                    function detectBlow() {
-                        if (document.getElementById('screen-4').classList.contains('active') && !isBlown) {
-                            analyser.getByteFrequencyData(dataArray);
-                            let sum = 0;
-                            for (let i = 0; i < bufferLength; i++) {
-                                sum += dataArray[i];
-                            }
-                            let average = sum / bufferLength;
-
-                            // If microphone detects a sharp puff/blow of air volume threshold
-                            if (average > 45) {
-                                stream.getTracks().forEach(track => track.stop());
-                                blowCandle();
-                                return;
-                            }
-                            requestAnimationFrame(detectBlow);
-                        }
-                    }
-                    detectBlow();
-                })
-                .catch(err => {
-                    console.log("Mic access not allowed or available, click fallback active.");
-                });
+            }, 900);
         }
 
         const sentences = [
