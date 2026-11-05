@@ -10,6 +10,7 @@
             padding: 0;
             box-sizing: border-box;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
@@ -22,7 +23,6 @@
             padding: 10px;
         }
 
-        /* Fully Responsive Phone Container */
         .phone-frame {
             width: 100%;
             max-width: 400px;
@@ -41,7 +41,6 @@
             border: 8px solid #2d1033;
         }
 
-        /* Screens */
         .screen {
             position: absolute;
             top: 0;
@@ -55,19 +54,18 @@
             padding: 25px;
             text-align: center;
             background: linear-gradient(180deg, #ffb6c1, #ff8da1);
-            transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out;
-            z-index: 5;
-            overflow-y: auto;
-        }
-
-        .screen.hidden {
-            opacity: 0;
-            transform: scale(0.9);
-            pointer-events: none;
+            transition: opacity 0.3s ease-in-out;
             z-index: 1;
+            opacity: 0;
+            pointer-events: none;
         }
 
-        /* Typography */
+        .screen.active {
+            opacity: 1;
+            pointer-events: auto;
+            z-index: 10;
+        }
+
         h1 {
             color: #b30047;
             font-size: 1.6rem;
@@ -81,7 +79,6 @@
             margin-bottom: 15px;
         }
 
-        /* PIN / Passcode Screen */
         .passcode-dots {
             display: flex;
             gap: 12px;
@@ -113,22 +110,21 @@
             height: 60px;
             border-radius: 50%;
             border: none;
-            background: rgba(255, 255, 255, 0.85);
+            background: rgba(255, 255, 255, 0.9);
             font-size: 1.3rem;
             font-weight: bold;
             color: #b30047;
             cursor: pointer;
             box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-            transition: 0.2s;
+            transition: 0.1s;
         }
 
         .key-btn:active {
             background: #b30047;
             color: white;
-            transform: scale(0.95);
+            transform: scale(0.92);
         }
 
-        /* Buttons */
         .btn-group {
             display: flex;
             gap: 20px;
@@ -150,6 +146,7 @@
             cursor: pointer;
             box-shadow: 0 5px 15px rgba(179, 0, 71, 0.4);
             transition: 0.2s;
+            z-index: 15;
         }
 
         .custom-btn:hover {
@@ -163,7 +160,6 @@
             transition: 0.15s ease-out;
         }
 
-        /* Balloons Mini-Game */
         .balloon-container {
             display: flex;
             flex-wrap: wrap;
@@ -186,7 +182,6 @@
             font-size: 1.1rem;
             cursor: pointer;
             box-shadow: inset -6px -6px 0px rgba(0,0,0,0.15), 0 5px 15px rgba(0,0,0,0.2);
-            animation: floatBalloon 2s infinite alternate ease-in-out;
             position: relative;
         }
 
@@ -197,12 +192,6 @@
             pointer-events: none;
         }
 
-        @keyframes floatBalloon {
-            0% { transform: translateY(0); }
-            100% { transform: translateY(-8px); }
-        }
-
-        /* Candle Screen */
         .cake-box {
             font-size: 70px;
             margin: 15px 0;
@@ -215,15 +204,8 @@
             position: absolute;
             top: -18px;
             left: 42%;
-            animation: flicker 0.5s infinite alternate;
         }
 
-        @keyframes flicker {
-            0% { transform: scale(1); opacity: 1; }
-            100% { transform: scale(1.2); opacity: 0.8; }
-        }
-
-        /* Envelope */
         .envelope {
             width: 200px;
             height: 130px;
@@ -238,14 +220,8 @@
             color: white;
             font-weight: bold;
             margin: 15px 0;
-            transition: 0.3s;
         }
 
-        .envelope:hover {
-            transform: scale(1.05);
-        }
-
-        /* Sentence Letter Display */
         .letter-card {
             background: white;
             padding: 20px;
@@ -268,17 +244,10 @@
             font-weight: 500;
         }
 
-        /* Gift Box */
         .gift-box {
             font-size: 80px;
             cursor: pointer;
-            animation: bounce 1s infinite alternate;
             margin: 15px 0;
-        }
-
-        @keyframes bounce {
-            0% { transform: translateY(0); }
-            100% { transform: translateY(-12px); }
         }
 
         .cashback-badge {
@@ -298,7 +267,7 @@
     <div class="phone-frame">
         
         <!-- STEP 1: Passcode Screen -->
-        <div id="screen-1" class="screen">
+        <div id="screen-1" class="screen active">
             <h1>🔒 Enter Passcode</h1>
             <p>Something special is waiting for you<br><small style="color:#555;">(PIN is 2525)</small></p>
             <div class="passcode-dots">
@@ -323,7 +292,7 @@
         </div>
 
         <!-- STEP 2 & 3: Greeting & Playful No Button -->
-        <div id="screen-2" class="screen hidden">
+        <div id="screen-2" class="screen">
             <div style="font-size: 55px; margin-bottom: 8px;">🧸🎂</div>
             <h1>Happy Birthday, Bestie!</h1>
             <p>Are you excited for what's next?</p>
@@ -334,7 +303,7 @@
         </div>
 
         <!-- STEP 4: Pop All 4 Balloons Mini-Game -->
-        <div id="screen-3" class="screen hidden">
+        <div id="screen-3" class="screen">
             <h1>🎈 Pop All 4 Balloons!</h1>
             <p id="balloon-counter">Popped: 0 / 4</p>
             <div class="balloon-container">
@@ -346,7 +315,7 @@
         </div>
 
         <!-- STEP 5: Virtual Candle Blowing -->
-        <div id="screen-4" class="screen hidden">
+        <div id="screen-4" class="screen">
             <h1>Make a Wish! 🕯️</h1>
             <p>Tap the candle flame to extinguish it</p>
             <div class="cake-box" onclick="blowCandle()">
@@ -357,7 +326,7 @@
         </div>
 
         <!-- STEP 6 & 7: Rose Bouquet -->
-        <div id="screen-5" class="screen hidden">
+        <div id="screen-5" class="screen">
             <h1>🌹 Forever Yours 🤍</h1>
             <div style="font-size: 60px; margin: 8px 0;">💐</div>
             <p>You make my world beautiful, you are my sunshine, and my favorite person ever! 💕</p>
@@ -365,7 +334,7 @@
         </div>
 
         <!-- STEP 8: Envelope Surprise Reveal -->
-        <div id="screen-6" class="screen hidden">
+        <div id="screen-6" class="screen">
             <h1>A Message From My Heart</h1>
             <p>Tap the envelope to open</p>
             <div class="envelope" onclick="nextScreen(7)">
@@ -374,7 +343,7 @@
         </div>
 
         <!-- STEP 9: Sentence-by-Sentence Letter Display -->
-        <div id="screen-7" class="screen hidden">
+        <div id="screen-7" class="screen">
             <h1>Special Note 📜</h1>
             <div class="letter-card">
                 <div class="letter-text" id="letter-sentence">Loading...</div>
@@ -383,7 +352,7 @@
         </div>
 
         <!-- STEP 10: Gift Box Reveal & Checkout -->
-        <div id="screen-8" class="screen hidden">
+        <div id="screen-8" class="screen">
             <h1>One Last Thing... 🎁</h1>
             <div class="cashback-badge">🎁 Get Rs 50 cashback after payment</div>
             <div class="gift-box" onclick="openGift()">
@@ -405,7 +374,7 @@
                 updateDots();
                 if (currentPIN.length === 4) {
                     if (currentPIN === correctPIN) {
-                        setTimeout(() => nextScreen(2), 250);
+                        setTimeout(() => nextScreen(2), 200);
                     } else {
                         alert("Incorrect PIN! Try 2525");
                         clearPIN();
@@ -431,14 +400,13 @@
         }
 
         function nextScreen(screenNum) {
-            document.querySelectorAll('.screen').forEach(s => s.classList.add('hidden'));
-            document.getElementById(`screen-${screenNum}`).classList.remove('hidden');
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById(`screen-${screenNum}`).classList.add('active');
             if (screenNum === 7) {
                 showSentence(0);
             }
         }
 
-        // Playful No Button
         function dodgeNo() {
             const btn = document.getElementById('no-btn');
             const x = (Math.random() - 0.5) * 140;
@@ -453,7 +421,7 @@
                 poppedCount++;
                 document.getElementById('balloon-counter').innerText = `Popped: ${poppedCount} / 4`;
                 if (poppedCount === 4) {
-                    setTimeout(() => nextScreen(5), 500);
+                    setTimeout(() => nextScreen(5), 400);
                 }
             }
         }
@@ -462,7 +430,7 @@
             const flame = document.getElementById('candle-flame');
             flame.style.display = 'none';
             document.getElementById('candle-status').innerText = "✨ Wish Granted! ✨";
-            setTimeout(() => nextScreen(6), 800);
+            setTimeout(() => nextScreen(6), 600);
         }
 
         const sentences = [
