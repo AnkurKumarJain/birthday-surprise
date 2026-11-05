@@ -197,13 +197,22 @@
             margin: 15px 0;
             cursor: pointer;
             position: relative;
+            display: inline-block;
+            padding: 10px;
         }
 
         .flame {
-            font-size: 30px;
+            font-size: 35px;
             position: absolute;
-            top: -18px;
-            left: 42%;
+            top: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: flicker 0.4s infinite alternate;
+        }
+
+        @keyframes flicker {
+            0% { transform: translateX(-50%) scale(1); opacity: 1; }
+            100% { transform: translateX(-50%) scale(1.25); opacity: 0.8; }
         }
 
         .envelope {
@@ -248,17 +257,12 @@
             font-size: 80px;
             cursor: pointer;
             margin: 15px 0;
+            animation: bounce 1s infinite alternate;
         }
 
-        .cashback-badge {
-            background: #fff;
-            color: #d63384;
-            padding: 6px 14px;
-            border-radius: 20px;
-            font-weight: bold;
-            font-size: 0.8rem;
-            margin-bottom: 12px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        @keyframes bounce {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-10px); }
         }
     </style>
 </head>
@@ -317,12 +321,12 @@
         <!-- STEP 5: Virtual Candle Blowing -->
         <div id="screen-4" class="screen">
             <h1>Make a Wish! 🕯️</h1>
-            <p>Tap the candle flame to extinguish it</p>
+            <p>Tap the candle flame to blow it out</p>
             <div class="cake-box" onclick="blowCandle()">
                 🎂
                 <div class="flame" id="candle-flame">🔥</div>
             </div>
-            <p id="candle-status" style="font-style: italic; color: #4a1525;">(Tap the flame)</p>
+            <p id="candle-status" style="font-style: italic; color: #4a1525;">(Tap the flame!)</p>
         </div>
 
         <!-- STEP 6 & 7: Rose Bouquet -->
@@ -351,15 +355,13 @@
             </div>
         </div>
 
-        <!-- STEP 10: Gift Box Reveal & Checkout -->
+        <!-- STEP 10: Final Gift Box Celebration -->
         <div id="screen-8" class="screen">
-            <h1>One Last Thing... 🎁</h1>
-            <div class="cashback-badge">🎁 Get Rs 50 cashback after payment</div>
+            <h1>Make a Wish Come True! 🌟</h1>
             <div class="gift-box" onclick="openGift()">
                 🎁
             </div>
-            <p id="final-msg" style="font-weight: bold; color: #b30047;">Tap the gift box!</p>
-            <button class="custom-btn" id="checkout-btn" style="display:none; background: #28a745;" onclick="alert('🎉 Happy Birthday! Link successfully generated and ready to share!')">Get This At ₹199</button>
+            <p id="final-msg" style="font-weight: bold; color: #b30047; font-size: 1.1rem;">Tap the gift box to unlock your surprise!</p>
         </div>
 
     </div>
@@ -430,7 +432,9 @@
             const flame = document.getElementById('candle-flame');
             flame.style.display = 'none';
             document.getElementById('candle-status').innerText = "✨ Wish Granted! ✨";
-            setTimeout(() => nextScreen(6), 600);
+            setTimeout(() => {
+                nextScreen(6);
+            }, 700);
         }
 
         const sentences = [
@@ -462,8 +466,7 @@
 
         function openGift() {
             document.querySelector('.gift-box').innerText = "🎉";
-            document.getElementById('final-msg').innerText = "Surprise Unlocked Successfully!";
-            document.getElementById('checkout-btn').style.display = "block";
+            document.getElementById('final-msg').innerText = "Happy Birthday!! Wishing you the best day ever! 🥳🎈";
         }
     </script>
 </body>
